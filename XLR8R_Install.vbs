@@ -12,7 +12,9 @@ On Error Resume Next
 
 installPath = objWshShell.SpecialFolders("Appdata") & "\Microsoft\Addins\"
 objFileSys.CopyFile "XLR8R.xlam", installPath & "XLR8R.xlam", True
-objFileSys.CopyFile "XLR8R.ini", installPath & "XLR8R.ini", True
+If Dir(installPath & "XLR8R.ini") = "" Then
+    objFileSys.CopyFile "XLR8R.ini", installPath & "XLR8R.ini", True
+End If
 
 objExcel.Workbooks.Add
 Set objAddin = objExcel.AddIns.Add(installPath & "XLR8R.xlam", True)

@@ -38,7 +38,6 @@ Private Sub SoCd()
     Dim x2          As Double
     Dim y1          As Double
     Dim y2          As Double
-    Dim obj         As Object
     Dim zoomed      As Long
     Dim scrolledCol As Long
     Dim scrolledRow As Long
@@ -100,16 +99,7 @@ Private Sub SoCd()
     
     Application.ScreenUpdating = False
     
-    'Select object
-    For Each obj In ActiveSheet.Shapes
-        If obj.Left >= x1 And _
-        obj.Top >= y1 And _
-        obj.Left + obj.Width <= x2 And _
-        obj.Top + obj.Height <= y2 And _
-        obj.Visible = True Then
-            obj.Select Replace:=False
-        End If
-    Next
+    Call SelectObj(x1, x2, y1, y2)
     
     Application.ScreenUpdating = True
 
@@ -124,13 +114,6 @@ SetBefore:
 End Sub
 
 Private Sub SoSl()
-
-    If TypeName(Selection) <> "Range" Then
-        If Selection.ShapeRange.Count > 1 Then
-            MsgBox "Can not work when more than one object is selected."
-            Exit Sub
-        End If
-    End If
     
     If ActiveWorkbook.MultiUserEditing Then
         MsgBox "Can't run this add-in on shared workbook."
@@ -143,18 +126,42 @@ Private Sub SoSl()
     Dim y1 As Double
     Dim x2 As Double
     Dim y2 As Double
-    Dim obj As Object
     Dim zoomed As Long
     
     'Zoom (To avoid excel bug)
     zoomed = ActiveWindow.Zoom
     ActiveWindow.Zoom = 100
     
-    'Get coordinate
-    x1 = Selection.Left
-    y1 = Selection.Top
-    x2 = x1 + Selection.Width
-    y2 = y1 + Selection.Height
+    If TypeName(Selection) <> "Range" Then
+        For i = 1 To Selection.ShapeRange.Count
+            'Get coordinate
+            x1 = Selection.ShapeRange(i).Left
+            y1 = Selection.ShapeRange(i).Top
+            x2 = x1 + Selection.ShapeRange(i).Width
+            y2 = y1 + Selection.ShapeRange(i).Height
+
+            Call SelectObj(x1, x2, y1, y2)
+        Next
+    Else
+        'Get coordinate
+        x1 = Selection.Left
+        y1 = Selection.Top
+        x2 = x1 + Selection.Width
+        y2 = y1 + Selection.Height
+
+        Call SelectObj(x1, x2, y1, y2)
+    End If
+
+    'Rezoom (To avoid excel bug)
+    ActiveWindow.Zoom = zoomed
+
+    Application.ScreenUpdating = True
+    
+End Sub
+
+Private Sub SelectObj(x1 As Double, x2 As Double, y1 As Double, y2 As Double)
+        
+    Dim obj As Object
     
     'Select object
     For Each obj In ActiveSheet.Shapes
@@ -166,10 +173,5 @@ Private Sub SoSl()
             obj.Select Replace:=False
         End If
     Next
-
-    'Rezoom (To avoid excel bug)
-    ActiveWindow.Zoom = zoomed
-
-    Application.ScreenUpdating = True
     
 End Sub

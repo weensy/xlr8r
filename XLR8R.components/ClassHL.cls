@@ -36,7 +36,13 @@ Public Sub pHL()
     Dim scrolledRow As Long
     
     If ActiveWorkbook.MultiUserEditing Then
-        MsgBox "Can't run this add-in on shared workbook."
+        If LANG = "jp" Then
+            MsgBox msgMultiJp
+        ElseIf LANG = "kr" Then
+            MsgBox msgMultiKr
+        Else
+            MsgBox msgMultiEn
+        End If
         Exit Sub
     End If
     

@@ -21,6 +21,11 @@ Public CB_SC    As String
 'Language
 Public LANG     As String
 
+'Message
+Public Const msgMultiEn As String = "Can't run this add-in on shared workbook."
+Public Const msgMultiJp As String = "共有ワークブックでは実行できません｡"
+Public Const msgMultiKr As String = "Can't run this add-in on shared workbook."
+
 Public Sub PreferenceSetting()
     If LANG = "jp" Then
         FormPS_jp.Show

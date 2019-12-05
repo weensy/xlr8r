@@ -18,8 +18,17 @@ Public SO_RNG   As String
 'CopyAsBitmap
 Public CB_SC    As String
 
+'Language
+Public LANG     As String
+
 Public Sub PreferenceSetting()
-    FormPS.Show
+    If LANG = "jp" Then
+        FormPS_jp.Show
+    ElseIf LANG = "kr" Then
+        FormPS_kr.Show
+    Else
+        FormPS.Show
+    End If
 End Sub
 
 Public Sub ArrangeCursors()

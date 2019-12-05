@@ -64,6 +64,9 @@ Private Sub Workbook_Open()
     'CopyAsBitmap
     CB_SC = ClsPS.ReadINI("CopyAsBitmap", "CB_SC")
     
+    'Language
+    LANG = ClsPS.ReadINI("Language", "LANG")
+    
     'Set Shortcut
     Call ClsPS.SetSC("p", "PreferenceSetting")
     Call ClsPS.SetSC(AC_SC, "ArrangeCursors")

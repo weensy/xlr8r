@@ -1,20 +1,20 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormPS 
-   Caption         =   "Preference Settings"
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} FormPS_kr 
+   Caption         =   "Korean is grabled"
    ClientHeight    =   3480
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   5400
-   OleObjectBlob   =   "FormPS.frx":0000
+   OleObjectBlob   =   "FormPS_kr.frx":0000
    StartUpPosition =   1  'オーナー フォームの中央
 End
-Attribute VB_Name = "FormPS"
+Attribute VB_Name = "FormPS_kr"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnCancel_Click()
-    Unload FormPS
+    Unload FormPS_kr
 End Sub
 
 Private Sub btnDefault_Click()
@@ -102,7 +102,7 @@ Private Sub btnOK_Click()
 
     Set ClsPS = Nothing
     
-    Unload FormPS
+    Unload FormPS_kr
 End Sub
 
 Private Sub chkAcSc_Change()
@@ -277,3 +277,4 @@ Private Sub UserForm_Initialize()
         optKorean.Value = False
     End If
 End Sub
+

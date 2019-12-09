@@ -60,5 +60,7 @@ Copy to clipboard as image of selected range or objects.
 ## Customization
 
 You can customize on Preference Settings. Press `Ctrl + Shift + P` to open Preference Settings.
+
 ![Preference Settings](https://vaporwavy.io/static/97d41ad58a2f45db0abbdf5bc01d85b2/dc680/PS.png)
+
 You can change keybindings, languages, modes, and settings.

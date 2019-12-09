@@ -60,9 +60,5 @@ Copy to clipboard as image of selected range or objects.
 ## Customization
 
 You can customize on Preference Settings. Press `Ctrl + Shift + P` to open Preference Settings.
-![Preference Settings](./PS.png)
+![Preference Settings](https://vaporwavy.io/static/3a019194ec267229a15d941bdcf9109b/03e74/PS.png)
 You can change keybindings, languages, modes, and settings.
-
-## Contributing
-
-Visit the <a href="https://github.com/vaporwavy/xlr8r" target="_blank">GitHub</a>.

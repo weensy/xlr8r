@@ -8,8 +8,8 @@ Public AC_SHT   As String
 Public AC_HOME  As String
 
 'Highlighter
-Public HL_SC    As String
-Public HL_SHP   As String
+Public HL_BD    As String
+Public HL_CO    As String
 
 'SelectObjects
 Public SO_SC    As String
@@ -25,6 +25,9 @@ Public LANG     As String
 Public Const msgMultiEn As String = "Can't run this add-in on shared workbook."
 Public Const msgMultiJp As String = "共有ワークブックでは実行できません｡"
 Public Const msgMultiKr As String = "Can't run this add-in on shared workbook."
+Public Const msgOlScEn  As String = "There are overlapping shortcuts."
+Public Const msgOlScJp  As String = "重なるショートカットがあります。"
+Public Const msgOlScKr  As String = "There are overlapping shortcuts."
 
 Public Sub PreferenceSetting()
     If LANG = "jp" Then
@@ -43,10 +46,17 @@ Public Sub ArrangeCursors()
     Set clsAC = Nothing
 End Sub
 
-Public Sub Highlighter()
+Public Sub Highlighter_Border()
     Dim clsHL As ClassHL
     Set clsHL = New ClassHL
-    Call clsHL.pHL
+    Call clsHL.pHL("bd")
+    Set clsHL = Nothing
+End Sub
+
+Public Sub Highlighter_Callout()
+    Dim clsHL As ClassHL
+    Set clsHL = New ClassHL
+    Call clsHL.pHL("co")
     Set clsHL = Nothing
 End Sub
 

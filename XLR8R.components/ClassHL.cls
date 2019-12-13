@@ -17,7 +17,7 @@ End Type
 Private Const DPI As Long = 96
 Private Const PPI As Long = 72
 
-Public Sub pHL()
+Public Sub pHL(HL_SHP As String)
     
     Dim R1C1Left    As Double
     Dim R1C1Top     As Double

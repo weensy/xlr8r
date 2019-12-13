@@ -14,7 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnCancel_Click()
-    Unload FormPS_jp
+    Unload Me
 End Sub
 
 Private Sub btnDefault_Click()
@@ -25,9 +25,10 @@ Private Sub btnDefault_Click()
     optAcA1.Value = True
     
     'Highlighter
-    chkHlSc.Value = True
-    txtHlSc.Value = "D"
-    optHlBd.Value = True
+    chkHlBd.Value = True
+    txtHlBd.Value = "D"
+    chkHlCo.Value = True
+    txtHlCo.Value = "F"
     
     'SelectObjects
     chkSoSc.Value = True
@@ -44,21 +45,50 @@ Private Sub btnDefault_Click()
 End Sub
 
 Private Sub btnOK_Click()
+
+    'Check
+    Dim sc(4) As String
+    
+    sc(0) = txtAcSc.Value
+    sc(1) = txtHlBd.Value
+    sc(2) = txtHlCo.Value
+    sc(3) = txtSoSc.Value
+    sc(4) = txtCbSc.Value
+    
+    For i = 0 To 3
+        For j = i + 1 To 4
+            If sc(i) = sc(j) Then
+                If LANG = "jp" Then
+                    MsgBox msgOlScJp
+                ElseIf LANG = "kr" Then
+                    MsgBox msgOlScKr
+                Else
+                    MsgBox msgOlScEn
+                End If
+                Exit Sub
+            End If
+        Next
+    Next
+
+    'Work
     Dim ClsPS As ClassPS
     Set ClsPS = New ClassPS
     
     Call ClsPS.SetSC(AC_SC, "")
-    Call ClsPS.SetSC(HL_SC, "")
+    Call ClsPS.SetSC(HL_BD, "")
+    Call ClsPS.SetSC(HL_CO, "")
     Call ClsPS.SetSC(SO_SC, "")
     Call ClsPS.SetSC(CB_SC, "")
     
     AC_SC = txtAcSc.Value
-    HL_SC = txtHlSc.Value
+    HL_BD = txtHlBd.Value
+    HL_CO = txtHlCo.Value
     SO_SC = txtSoSc.Value
     CB_SC = txtCbSc.Value
 
     Call ClsPS.SetSC(AC_SC, "ArrangeCursors")
-    Call ClsPS.SetSC(HL_SC, "Highlighter")
+    Call ClsPS.SetSC(HL_BD, "Highlighter_Border")
+    Call ClsPS.SetSC(HL_CO, "Highlighter_Callout")
     Call ClsPS.SetSC(SO_SC, "SelectObjects")
     Call ClsPS.SetSC(CB_SC, "CopyAsBitmap")
     
@@ -69,13 +99,7 @@ Private Sub btnOK_Click()
     End If
     
     AC_HOME = txtAcCstm.Value
-    
-    If optHlCo.Value Then
-        HL_SHP = "co"
-    Else
-        HL_SHP = "bd"
-    End If
-    
+        
     If optSoCd.Value Then
         SO_RNG = "cd"
     Else
@@ -93,8 +117,8 @@ Private Sub btnOK_Click()
     Call ClsPS.WriteINI("ArrangeCursors", "AC_SC", AC_SC)
     Call ClsPS.WriteINI("ArrangeCursors", "AC_SHT", AC_SHT)
     Call ClsPS.WriteINI("ArrangeCursors", "AC_HOME", AC_HOME)
-    Call ClsPS.WriteINI("Highlighter", "HL_SC", HL_SC)
-    Call ClsPS.WriteINI("Highlighter", "HL_SHP", HL_SHP)
+    Call ClsPS.WriteINI("Highlighter", "HL_BD", HL_BD)
+    Call ClsPS.WriteINI("Highlighter", "HL_CO", HL_CO)
     Call ClsPS.WriteINI("SelectObjects", "SO_SC", SO_SC)
     Call ClsPS.WriteINI("SelectObjects", "SO_RNG", SO_RNG)
     Call ClsPS.WriteINI("CopyAsBitmap", "CB_SC", CB_SC)
@@ -102,7 +126,7 @@ Private Sub btnOK_Click()
 
     Set ClsPS = Nothing
     
-    Unload FormPS_jp
+    Unload Me
 End Sub
 
 Private Sub chkAcSc_Change()
@@ -129,15 +153,27 @@ Private Sub chkCbSc_Change()
     End If
 End Sub
 
-Private Sub chkHlSc_Change()
-    If chkHlSc.Value Then
-        txtHlSc.Enabled = True
+Private Sub chkHlBd_Change()
+    If chkHlBd.Value Then
+        txtHlBd.Enabled = True
         If MultiPage.Value = 1 Then
-            txtHlSc.SetFocus
+            txtHlBd.SetFocus
         End If
     Else
-        txtHlSc.Enabled = False
-        txtHlSc.Value = ""
+        txtHlBd.Enabled = False
+        txtHlBd.Value = ""
+    End If
+End Sub
+
+Private Sub chkHlCo_Change()
+    If chkHlCo.Value Then
+        txtHlCo.Enabled = True
+        If MultiPage.Value = 1 Then
+            txtHlCo.SetFocus
+        End If
+    Else
+        txtHlCo.Enabled = False
+        txtHlCo.Value = ""
     End If
 End Sub
 
@@ -216,20 +252,20 @@ Private Sub UserForm_Initialize()
     '********************************
     'Highligher
     '********************************
-    If HL_SC = "" Then
-        chkHlSc.Value = False
-        txtHlSc.Enabled = False
+    If HL_BD = "" Then
+        chkHlBd.Value = False
+        txtHlBd.Enabled = False
     Else
-        chkHlSc.Value = True
+        chkHlBd.Value = True
     End If
-    txtHlSc.Value = HL_SC
-    If HL_SHP = "co" Then
-        optHlBd.Value = False
-        optHlCo.Value = True
+    txtHlBd.Value = HL_BD
+    If HL_CO = "" Then
+        chkHlCo.Value = False
+        txtHlCo.Enabled = False
     Else
-        optHlBd.Value = True
-        optHlCo.Value = False
+        chkHlCo.Value = True
     End If
+    txtHlCo.Value = HL_CO
     
     '********************************
     'SelectObjects

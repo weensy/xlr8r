@@ -7,7 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Private Declare Function GetCursorPos Lib "USER32" (lpPoint As POINTAPI) As Long
+Private Declare PtrSafe Function GetCursorPos Lib "USER32" (lpPoint As POINTAPI) As Long
 
 Private Type POINTAPI
     x As Long

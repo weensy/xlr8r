@@ -7,8 +7,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Private Declare Function WriteString& Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal AN$, ByVal KN$, ByVal iVal$, ByVal fPath$)
-Private Declare Function GetString& Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal AN$, ByVal KN$, ByVal iVal$, ByVal RetS$, ByVal rSize&, ByVal fPath$)
+Private Declare PtrSafe Function WriteString& Lib "kernel32" Alias "WritePrivateProfileStringA" (ByVal AN$, ByVal KN$, ByVal iVal$, ByVal fPath$)
+Private Declare PtrSafe Function GetString& Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal AN$, ByVal KN$, ByVal iVal$, ByVal RetS$, ByVal rSize&, ByVal fPath$)
  
 Public Sub WriteINI(iSt As String, iK As String, iVal As String)
     Call WriteString(iSt, iK, iVal, INIPATH)

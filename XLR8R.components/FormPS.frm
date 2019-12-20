@@ -312,4 +312,38 @@ Private Sub UserForm_Initialize()
         optJapanese.Value = False
         optKorean.Value = False
     End If
+    
+    '********************************
+    'Set caption
+    '********************************
+    If LANG = "jp" Then
+        FormPS.Caption = "設定"
+        btnDefault.Caption = "デフォルト"
+        btnCancel.Caption = "キャンセル"
+        MultiPage.Pages("pgAC").Caption = "カーソル配置"
+        frmAcSht.Caption = "シートの位置"
+        optAcFs.Caption = "最初シート"
+        optAcCs.Caption = "現在シート"
+        frmAcCl.Caption = "セルの位置"
+        optAcCstm.Caption = "指定"
+        MultiPage.Pages("pgHL").Caption = "ハイライト"
+        frmHlBd.Caption = "枠"
+        frmHlCo.Caption = "吹き出し"
+        MultiPage.Pages("pgSO").Caption = "オブジェクト選択"
+        frmSoRng.Caption = "範囲"
+        optSoSl.Caption = "選択範囲"
+        optSoCd.Caption = "座標利用"
+        MultiPage.Pages("pgCB").Caption = "イメージでコピー"
+        MultiPage.Pages("pgSS").Caption = "シート切り替え"
+        frmSF.Caption = "最初シートへ"
+        frmSL.Caption = "最後シートへ"
+        MultiPage.Pages("pgLng").Caption = "言語"
+        frmLng.Caption = "言語"
+        optEnglish.Caption = "英語"
+        optJapanese.Caption = "日本語"
+        optKorean.Caption = "韓国語"
+    ElseIf LANG = "kr" Then
+        
+    End If
+    
 End Sub

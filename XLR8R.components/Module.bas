@@ -42,13 +42,7 @@ Public Const ttlCdSttKr As String = "Start point"
 Public Const ttlCdEndKr As String = "End point"
 
 Public Sub PreferenceSetting()
-    If LANG = "jp" Then
-        FormPS_jp.Show
-    ElseIf LANG = "kr" Then
-        FormPS_kr.Show
-    Else
-        FormPS.Show
-    End If
+    FormPS.Show
 End Sub
 
 Public Sub ArrangeCursors()

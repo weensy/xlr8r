@@ -34,15 +34,34 @@ Public Sub pHL(HL_SHP As String)
     Dim zoomed      As Long
     Dim scrolledCol As Long
     Dim scrolledRow As Long
+    Dim msgMulti    As String
+    Dim msgCdStt    As String
+    Dim msgCdEnd    As String
+    Dim ttlCdStt    As String
+    Dim ttlCdEnd    As String
+    
+    If LANG = "jp" Then
+        msgMulti = msgMultiJp
+        msgCdStt = msgCdSttJp
+        msgCdEnd = msgCdEndJp
+        ttlCdStt = ttlCdSttJp
+        ttlCdEnd = ttlCdEndJp
+    ElseIf LANG = "kr" Then
+        msgMulti = msgMultiKr
+        msgCdStt = msgCdSttKr
+        msgCdEnd = msgCdEndKr
+        ttlCdStt = ttlCdSttKr
+        ttlCdEnd = ttlCdEndKr
+    Else
+        msgMulti = msgMultiEn
+        msgCdStt = msgCdSttEn
+        msgCdEnd = msgCdEndEn
+        ttlCdStt = ttlCdSttEn
+        ttlCdEnd = ttlCdEndEn
+    End If
     
     If ActiveWorkbook.MultiUserEditing Then
-        If LANG = "jp" Then
-            MsgBox msgMultiJp
-        ElseIf LANG = "kr" Then
-            MsgBox msgMultiKr
-        Else
-            MsgBox msgMultiEn
-        End If
+        MsgBox msgMulti
         Exit Sub
     End If
     
@@ -57,7 +76,7 @@ Public Sub pHL(HL_SHP As String)
     ActiveWindow.ScrollRow = scrolledRow
     
     'Messagebox
-    If MsgBox("Press the spacebar where you want.", vbOKCancel, "Start point") <> vbOK Then
+    If MsgBox(msgCdStt, vbOKCancel, ttlCdStt) <> vbOK Then
         GoTo SetBefore
     End If
     
@@ -69,7 +88,7 @@ Public Sub pHL(HL_SHP As String)
     MouseT1 = (Pos.y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
     
     'Messagebox
-    If MsgBox("Press the spacebar where you want.", vbOKCancel, "End point") <> vbOK Then
+    If MsgBox(msgCdEnd, vbOKCancel, ttlCdEnd) <> vbOK Then
         GoTo SetBefore
     End If
     

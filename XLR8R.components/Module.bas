@@ -28,6 +28,18 @@ Public Const msgMultiKr As String = "Can't run this add-in on shared workbook."
 Public Const msgOlScEn  As String = "There are overlapping shortcuts."
 Public Const msgOlScJp  As String = "重なるショートカットがあります。"
 Public Const msgOlScKr  As String = "There are overlapping shortcuts."
+Public Const msgCdSttEn As String = "Press the spacebar at the start point you want."
+Public Const msgCdEndEn As String = "Press the spacebar at the end point you want."
+Public Const msgCdSttJp As String = "開始点の位置でスペースキーを押してください。"
+Public Const msgCdEndJp As String = "終了点の位置でスペースキーを押してください。"
+Public Const msgCdSttKr As String = "Press the spacebar at the start point you want."
+Public Const msgCdEndKr As String = "Press the spacebar at the end point you want."
+Public Const ttlCdSttEn As String = "Start point"
+Public Const ttlCdEndEn As String = "End point"
+Public Const ttlCdSttJp As String = "開始点"
+Public Const ttlCdEndJp As String = "終了点"
+Public Const ttlCdSttKr As String = "Start point"
+Public Const ttlCdEndKr As String = "End point"
 
 Public Sub PreferenceSetting()
     If LANG = "jp" Then

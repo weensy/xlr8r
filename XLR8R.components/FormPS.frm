@@ -46,7 +46,7 @@ End Sub
 
 Private Sub btnOK_Click()
 
-    'Check
+    'Check shortcut
     Dim sc(4) As String
     
     sc(0) = txtAcSc.Value
@@ -57,7 +57,9 @@ Private Sub btnOK_Click()
     
     For i = 0 To 3
         For j = i + 1 To 4
-            If sc(i) = sc(j) Then
+            If sc(i) <> "" _
+            And sc(j) <> "" _
+            And sc(i) = sc(j) Then
                 If LANG = "jp" Then
                     MsgBox msgOlScJp
                 ElseIf LANG = "kr" Then
@@ -69,6 +71,79 @@ Private Sub btnOK_Click()
             End If
         Next
     Next
+    
+    'Check cell
+    If optAcCstm.Value Then
+    
+        Dim RE   As Object
+        Dim mCol As Object
+        Dim mRow As Object
+        Dim nCol As Long
+        Dim nRow As Long
+        
+        Set RE = CreateObject("VBScript.RegExp")
+        RE.Pattern = "^[A-Z]+[0-9]+$"
+        
+        If Not RE.Test(txtAcCstm.Value) Then
+            If LANG = "jp" Then
+                MsgBox msgNeCllJp
+            ElseIf LANG = "kr" Then
+                MsgBox msgNeCllKr
+            Else
+                MsgBox msgNeCllEn
+            End If
+            MultiPage.Value = 0
+            txtAcCstm.SetFocus
+            Exit Sub
+        End If
+        
+        RE.Pattern = "[A-Z]+"
+        
+        Set mCol = RE.Execute(txtAcCstm.Value)
+        
+        RE.Pattern = "[0-9]+"
+        
+        Set mRow = RE.Execute(txtAcCstm.Value)
+        
+        Set RE = Nothing
+        
+        nCol = C2N(Mid(mCol(0).Value, mCol(0).Length, 1))
+        
+        For i = 1 To mCol(0).Length - 1
+            nCol = nCol + 26 ^ (mCol(0).Length - i) * C2N(Mid(mCol(0).Value, i, 1))
+        Next
+        
+        Set mCol = Nothing
+        
+        nRow = mRow(0).Value
+        
+        Set mRow = Nothing
+        
+        If ActiveWorkbook.ActiveSheet.Columns.Count < nCol Then
+            If LANG = "jp" Then
+                MsgBox msgExColJp
+            ElseIf LANG = "kr" Then
+                MsgBox msgExColKr
+            Else
+                MsgBox msgExColEn
+            End If
+            MultiPage.Value = 0
+            txtAcCstm.SetFocus
+            Exit Sub
+        ElseIf ActiveWorkbook.ActiveSheet.Rows.Count < nRow Then
+            If LANG = "jp" Then
+                MsgBox msgExRowJp
+            ElseIf LANG = "kr" Then
+                MsgBox msgExRowKr
+            Else
+                MsgBox msgExRowEn
+            End If
+            MultiPage.Value = 0
+            txtAcCstm.SetFocus
+            Exit Sub
+        End If
+        
+    End If
 
     'Work
     Dim ClsPS As ClassPS
@@ -347,3 +422,61 @@ Private Sub UserForm_Initialize()
     End If
     
 End Sub
+
+Private Function C2N(str As String)
+    If str = "A" Then
+        C2N = 1
+    ElseIf str = "B" Then
+        C2N = 2
+    ElseIf str = "C" Then
+        C2N = 3
+    ElseIf str = "D" Then
+        C2N = 4
+    ElseIf str = "E" Then
+        C2N = 5
+    ElseIf str = "F" Then
+        C2N = 6
+    ElseIf str = "G" Then
+        C2N = 7
+    ElseIf str = "H" Then
+        C2N = 8
+    ElseIf str = "I" Then
+        C2N = 9
+    ElseIf str = "J" Then
+        C2N = 10
+    ElseIf str = "K" Then
+        C2N = 11
+    ElseIf str = "L" Then
+        C2N = 12
+    ElseIf str = "M" Then
+        C2N = 13
+    ElseIf str = "N" Then
+        C2N = 14
+    ElseIf str = "O" Then
+        C2N = 15
+    ElseIf str = "P" Then
+        C2N = 16
+    ElseIf str = "Q" Then
+        C2N = 17
+    ElseIf str = "R" Then
+        C2N = 18
+    ElseIf str = "S" Then
+        C2N = 19
+    ElseIf str = "T" Then
+        C2N = 20
+    ElseIf str = "U" Then
+        C2N = 21
+    ElseIf str = "V" Then
+        C2N = 22
+    ElseIf str = "W" Then
+        C2N = 23
+    ElseIf str = "X" Then
+        C2N = 24
+    ElseIf str = "Y" Then
+        C2N = 25
+    ElseIf str = "Z" Then
+        C2N = 26
+    Else
+        C2N = 0
+    End If
+End Function

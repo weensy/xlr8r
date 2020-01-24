@@ -5,6 +5,12 @@ Dim objAddin
 Dim installPath
 
 Set objWshShell = WScript.CreateObject("WScript.Shell")
+
+If InStr(1,objWshShell.Exec("tasklist").StdOut.ReadAll,"EXCEL.EXE",1) <> 0 Then
+    MsgBox "Excel is running. Please close Excel and try again.", vbExclamation, "Uninstall"
+    WScript.Quit
+End If
+
 Set objFileSys = CreateObject("Scripting.FileSystemObject")
 Set objExcel = CreateObject("Excel.Application")
 
@@ -31,5 +37,5 @@ Set objWshShell = Nothing
 If Err.Number = 0 Then
     MsgBox "Uninstallation complete.", vbInformation, "Uninstall"
 Else
-    MsgBox "Uninstallation failed.", vbExclamation, "Uninstall"
+    MsgBox "Uninstallation failed.", vbCritical, "Uninstall"
 End If

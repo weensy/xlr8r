@@ -17,6 +17,28 @@ Private Sub btnCancel_Click()
     Unload Me
 End Sub
 
+Private Sub btnChkUpd_Click()
+
+    Dim WinHttp   As Object
+    Dim Source    As String
+    Dim buf       As Long
+    
+    Set WinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
+    
+    WinHttp.Open "GET", "https://github.com/vaporwavy/xlr8r/releases.atom"
+    WinHttp.Send
+    WinHttp.WaitForResponse
+    Source = WinHttp.ResponseText
+    
+    buf = InStr(InStr(Source, "<entry>"), Source, "<title>") + 7
+    LATEST_VERSION = Mid(Source, buf, InStr(buf, Source, "</title>") - buf)
+    
+    lblLatVer.Caption = LATEST_VERSION
+    btnChkUpd.Visible = False
+    btnDownload.Visible = True
+    
+End Sub
+
 Private Sub btnDefault_Click()
     'ArrangeCursors
     chkAcSc.Value = True
@@ -44,6 +66,10 @@ Private Sub btnDefault_Click()
     
 End Sub
 
+Private Sub btnDownload_Click()
+    ThisWorkbook.FollowHyperlink "https://github.com/vaporwavy/xlr8r/archive/" & LATEST_VERSION & ".zip"
+End Sub
+
 Private Sub btnOK_Click()
 
     'Check shortcut
@@ -60,13 +86,7 @@ Private Sub btnOK_Click()
             If sc(i) <> "" _
             And sc(j) <> "" _
             And sc(i) = sc(j) Then
-                If LANG = "jp" Then
-                    MsgBox msgOlScJp
-                ElseIf LANG = "kr" Then
-                    MsgBox msgOlScKr
-                Else
-                    MsgBox msgOlScEn
-                End If
+                MsgBox msgOlSc
                 Exit Sub
             End If
         Next
@@ -75,24 +95,19 @@ Private Sub btnOK_Click()
     'Check cell
     If optAcCstm.Value Then
     
-        Dim RE   As Object
-        Dim mCol As Object
-        Dim mRow As Object
-        Dim nCol As Long
-        Dim nRow As Long
+        Dim RE      As Object
+        Dim mCol    As Object
+        Dim mRow    As Object
+        Dim nCol    As Long
+        Dim nRow    As Long
+        Dim flgOver As Boolean
         
         Set RE = CreateObject("VBScript.RegExp")
         RE.Pattern = "^[A-Z]+[0-9]+$"
         
         If Not RE.Test(txtAcCstm.Value) Then
-            If LANG = "jp" Then
-                MsgBox msgNeCllJp
-            ElseIf LANG = "kr" Then
-                MsgBox msgNeCllKr
-            Else
-                MsgBox msgNeCllEn
-            End If
-            MultiPage.Value = 0
+            MsgBox msgNeCll
+            MultiPage.Value = 1
             txtAcCstm.SetFocus
             Exit Sub
         End If
@@ -107,11 +122,17 @@ Private Sub btnOK_Click()
         
         Set RE = Nothing
         
-        nCol = C2N(Mid(mCol(0).Value, mCol(0).Length, 1))
+        If mCol(0).Length > 7 Then
+            flgOver = True
+        Else
+            flgOver = False
         
-        For i = 1 To mCol(0).Length - 1
-            nCol = nCol + 26 ^ (mCol(0).Length - i) * C2N(Mid(mCol(0).Value, i, 1))
-        Next
+            nCol = C2N(Mid(mCol(0).Value, mCol(0).Length, 1))
+            
+            For i = 1 To mCol(0).Length - 1
+                nCol = nCol + 26 ^ (mCol(0).Length - i) * C2N(Mid(mCol(0).Value, i, 1))
+            Next
+        End If
         
         Set mCol = Nothing
         
@@ -119,26 +140,15 @@ Private Sub btnOK_Click()
         
         Set mRow = Nothing
         
-        If ActiveWorkbook.ActiveSheet.Columns.Count < nCol Then
-            If LANG = "jp" Then
-                MsgBox msgExColJp
-            ElseIf LANG = "kr" Then
-                MsgBox msgExColKr
-            Else
-                MsgBox msgExColEn
-            End If
-            MultiPage.Value = 0
+        If ActiveWorkbook.ActiveSheet.Columns.Count < nCol _
+        Or flgOver Then
+            MsgBox msgExCol
+            MultiPage.Value = 1
             txtAcCstm.SetFocus
             Exit Sub
         ElseIf ActiveWorkbook.ActiveSheet.Rows.Count < nRow Then
-            If LANG = "jp" Then
-                MsgBox msgExRowJp
-            ElseIf LANG = "kr" Then
-                MsgBox msgExRowKr
-            Else
-                MsgBox msgExRowEn
-            End If
-            MultiPage.Value = 0
+            MsgBox msgExRow
+            MultiPage.Value = 1
             txtAcCstm.SetFocus
             Exit Sub
         End If
@@ -183,11 +193,14 @@ Private Sub btnOK_Click()
     
     If optJapanese.Value Then
         LANG = "jp"
-    ElseIf optKorean.Value Then
-        LANG = "kr"
     Else
         LANG = "en"
     End If
+    
+    Dim ClsCL As ClassCL
+    Set ClsCL = New ClassCL
+    Call ClsCL.SetMsg
+    Set ClsCL = Nothing
     
     Call ClsPS.WriteINI("ArrangeCursors", "AC_SC", AC_SC)
     Call ClsPS.WriteINI("ArrangeCursors", "AC_SHT", AC_SHT)
@@ -207,7 +220,7 @@ End Sub
 Private Sub chkAcSc_Change()
     If chkAcSc.Value Then
         txtAcSc.Enabled = True
-        If MultiPage.Value = 0 Then
+        If MultiPage.Value = 1 Then
             txtAcSc.SetFocus
         End If
     Else
@@ -219,7 +232,7 @@ End Sub
 Private Sub chkCbSc_Change()
     If chkCbSc.Value Then
         txtCbSc.Enabled = True
-        If MultiPage.Value = 3 Then
+        If MultiPage.Value = 4 Then
             txtCbSc.SetFocus
         End If
     Else
@@ -231,7 +244,7 @@ End Sub
 Private Sub chkHlBd_Change()
     If chkHlBd.Value Then
         txtHlBd.Enabled = True
-        If MultiPage.Value = 1 Then
+        If MultiPage.Value = 2 Then
             txtHlBd.SetFocus
         End If
     Else
@@ -243,7 +256,7 @@ End Sub
 Private Sub chkHlCo_Change()
     If chkHlCo.Value Then
         txtHlCo.Enabled = True
-        If MultiPage.Value = 1 Then
+        If MultiPage.Value = 2 Then
             txtHlCo.SetFocus
         End If
     Else
@@ -255,7 +268,7 @@ End Sub
 Private Sub chkSoSc_Change()
     If chkSoSc.Value Then
         txtSoSc.Enabled = True
-        If MultiPage.Value = 2 Then
+        If MultiPage.Value = 3 Then
             txtSoSc.SetFocus
         End If
     Else
@@ -267,7 +280,7 @@ End Sub
 Private Sub optAcCstm_Change()
     If optAcCstm.Value Then
         txtAcCstm.Enabled = True
-        If MultiPage.Value = 0 Then
+        If MultiPage.Value = 1 Then
             txtAcCstm.SetFocus
         End If
     Else
@@ -297,6 +310,19 @@ Private Sub txtSoSc_Change()
 End Sub
 
 Private Sub UserForm_Initialize()
+    '********************************
+    'General
+    '********************************
+    lblCurVer.Caption = CURRENT_VERSION
+    lblLatVer.Caption = LATEST_VERSION
+    If LATEST_VERSION = "" Then
+        btnChkUpd.Visible = True
+        btnDownload.Visible = False
+    Else
+        btnChkUpd.Visible = False
+        btnDownload.Visible = True
+    End If
+    
     '********************************
     'ArrangeCursor
     '********************************
@@ -377,15 +403,9 @@ Private Sub UserForm_Initialize()
     If LANG = "jp" Then
         optEnglish.Value = False
         optJapanese.Value = True
-        optKorean.Value = False
-    ElseIf LANG = "kr" Then
-        optEnglish.Value = False
-        optJapanese.Value = False
-        optKorean.Value = True
     Else
         optEnglish.Value = True
         optJapanese.Value = False
-        optKorean.Value = False
     End If
     
     '********************************
@@ -412,13 +432,15 @@ Private Sub UserForm_Initialize()
         MultiPage.Pages("pgSS").Caption = "シート切り替え"
         frmSF.Caption = "最初シートへ"
         frmSL.Caption = "最後シートへ"
-        MultiPage.Pages("pgLng").Caption = "言語"
+        MultiPage.Pages("pgGS").Caption = "全般"
         frmLng.Caption = "言語"
         optEnglish.Caption = "英語"
         optJapanese.Caption = "日本語"
-        optKorean.Caption = "韓国語"
-    ElseIf LANG = "kr" Then
-        
+        frmVer.Caption = "バージョン"
+        lblCurrent.Caption = "現在"
+        lblLatest.Caption = "最新"
+        btnChkUpd.Caption = "チェック"
+        btnDownload.Caption = "ダウンロード"
     End If
     
 End Sub

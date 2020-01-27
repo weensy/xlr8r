@@ -67,6 +67,12 @@ Private Sub Workbook_Open()
     'Language
     LANG = ClsPS.ReadINI("Language", "LANG")
     
+    'Message
+    Dim ClsCL As ClassCL
+    Set ClsCL = New ClassCL
+    Call ClsCL.SetMsg
+    Set ClsCL = Nothing
+    
     'Set Shortcut
     Call ClsPS.SetSC("p", "PreferenceSetting")
     Call ClsPS.SetSC(AC_SC, "ArrangeCursors")

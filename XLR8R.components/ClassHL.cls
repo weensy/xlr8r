@@ -34,32 +34,7 @@ Public Sub pHL(HL_SHP As String)
     Dim zoomed      As Long
     Dim scrolledCol As Long
     Dim scrolledRow As Long
-    Dim msgMulti    As String
-    Dim msgCdStt    As String
-    Dim msgCdEnd    As String
-    Dim ttlCdStt    As String
-    Dim ttlCdEnd    As String
-    
-    If LANG = "jp" Then
-        msgMulti = msgMultiJp
-        msgCdStt = msgCdSttJp
-        msgCdEnd = msgCdEndJp
-        ttlCdStt = ttlCdSttJp
-        ttlCdEnd = ttlCdEndJp
-    ElseIf LANG = "kr" Then
-        msgMulti = msgMultiKr
-        msgCdStt = msgCdSttKr
-        msgCdEnd = msgCdEndKr
-        ttlCdStt = ttlCdSttKr
-        ttlCdEnd = ttlCdEndKr
-    Else
-        msgMulti = msgMultiEn
-        msgCdStt = msgCdSttEn
-        msgCdEnd = msgCdEndEn
-        ttlCdStt = ttlCdSttEn
-        ttlCdEnd = ttlCdEndEn
-    End If
-    
+        
     If ActiveWorkbook.MultiUserEditing Then
         MsgBox msgMulti
         Exit Sub

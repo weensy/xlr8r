@@ -1,4 +1,7 @@
 Attribute VB_Name = "Module"
+Public Const CURRENT_VERSION As String = "v1.2.0"
+Public LATEST_VERSION As String
+
 'Ini file path
 Public INIPATH  As String
 
@@ -22,33 +25,15 @@ Public CB_SC    As String
 Public LANG     As String
 
 'Message
-Public Const msgMultiEn As String = "Can't run this add-in on shared workbook."
-Public Const msgMultiJp As String = "共有ワークブックでは実行できません｡"
-Public Const msgMultiKr As String = "Can't run this add-in on shared workbook."
-Public Const msgOlScEn  As String = "There are overlapping shortcuts."
-Public Const msgOlScJp  As String = "重なるショートカットがあります。"
-Public Const msgOlScKr  As String = "There are overlapping shortcuts."
-Public Const msgCdSttEn As String = "Press the spacebar at the start point you want."
-Public Const msgCdEndEn As String = "Press the spacebar at the end point you want."
-Public Const msgCdSttJp As String = "開始点の位置でスペースキーを押してください。"
-Public Const msgCdEndJp As String = "終了点の位置でスペースキーを押してください。"
-Public Const msgCdSttKr As String = "Press the spacebar at the start point you want."
-Public Const msgCdEndKr As String = "Press the spacebar at the end point you want."
-Public Const msgNeCllEn As String = "Invalid cell format."
-Public Const msgNeCllJp As String = "セルの指定が間違っています。"
-Public Const msgNeCllKr As String = "Invalid cell format."""
-Public Const msgExRowEn As String = "Input exceeded maximum row."
-Public Const msgExRowJp As String = "入力値が最大行数を超えています。"
-Public Const msgExRowKr As String = "Input exceeded maximum row."
-Public Const msgExColEn As String = "Input exceeded maximum column."
-Public Const msgExColJp As String = "入力値が最大列数を超えています。"
-Public Const msgExColKr As String = "Input exceeded maximum column."
-Public Const ttlCdSttEn As String = "Start point"
-Public Const ttlCdEndEn As String = "End point"
-Public Const ttlCdSttJp As String = "開始点"
-Public Const ttlCdEndJp As String = "終了点"
-Public Const ttlCdSttKr As String = "Start point"
-Public Const ttlCdEndKr As String = "End point"
+Public msgMulti As String
+Public msgOlSc  As String
+Public msgCdStt As String
+Public msgCdEnd As String
+Public msgNeCll As String
+Public msgExRow As String
+Public msgExCol As String
+Public ttlCdStt As String
+Public ttlCdEnd As String
 
 Public Sub PreferenceSetting()
     FormPS.Show

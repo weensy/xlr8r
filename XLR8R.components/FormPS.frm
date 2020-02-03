@@ -60,10 +60,6 @@ Private Sub btnDefault_Click()
     'CopyAsBitmap
     chkCbSc.Value = True
     txtCbSc.Value = "C"
-    
-    'Language
-    optEnglish.Value = True
-    
 End Sub
 
 Private Sub btnDownload_Click()

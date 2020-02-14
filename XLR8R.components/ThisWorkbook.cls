@@ -54,8 +54,11 @@ Private Sub Workbook_Open()
     AC_HOME = ClsPS.ReadINI("ArrangeCursors", "AC_HOME")
     
     'Highlighter
-    HL_BD = ClsPS.ReadINI("Highlighter", "HL_BD")
+    HL_OL = ClsPS.ReadINI("Highlighter", "HL_OL")
     HL_CO = ClsPS.ReadINI("Highlighter", "HL_CO")
+    HL_OL_CLR_LINE = ClsPS.ReadINI4Long("Highlighter", "HL_OL_CLR_LINE")
+    HL_CO_CLR_LINE = ClsPS.ReadINI4Long("Highlighter", "HL_CO_CLR_LINE")
+    HL_CO_CLR_FONT = ClsPS.ReadINI4Long("Highlighter", "HL_CO_CLR_FONT")
     
     'SelectObjects
     SO_SC = ClsPS.ReadINI("SelectObjects", "SO_SC")
@@ -76,7 +79,7 @@ Private Sub Workbook_Open()
     'Set Shortcut
     Call ClsPS.SetSC("p", "PreferenceSetting")
     Call ClsPS.SetSC(AC_SC, "ArrangeCursors")
-    Call ClsPS.SetSC(HL_BD, "Highlighter_Border")
+    Call ClsPS.SetSC(HL_OL, "Highlighter_Border")
     Call ClsPS.SetSC(HL_CO, "Highlighter_Callout")
     Call ClsPS.SetSC(SO_SC, "SelectObjects")
     Call ClsPS.SetSC(CB_SC, "CopyAsBitmap")
@@ -94,7 +97,7 @@ Private Sub Workbook_BeforeClose(Cancel As Boolean)
     'Reset Shortcut
     Call ClsPS.SetSC("p", "")
     Call ClsPS.SetSC(AC_SC, "")
-    Call ClsPS.SetSC(HL_BD, "")
+    Call ClsPS.SetSC(HL_OL, "")
     Call ClsPS.SetSC(HL_CO, "")
     Call ClsPS.SetSC(SO_SC, "")
     Call ClsPS.SetSC(CB_SC, "")

@@ -13,6 +13,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private Const URL_RELEASE As String = "https://github.com/vaporwavy/xlr8r/releases.atom"
+Private Const URL_ARCHIVE As String = "https://github.com/vaporwavy/xlr8r/archive/"
+
 Private Sub btnCancel_Click()
     Unload Me
 End Sub
@@ -21,17 +24,17 @@ Private Sub btnChkUpd_Click()
 
     Dim WinHttp   As Object
     Dim Source    As String
-    Dim buf       As Long
+    Dim pStart    As Long
     
     Set WinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
     
-    WinHttp.Open "GET", "https://github.com/vaporwavy/xlr8r/releases.atom"
+    WinHttp.Open "GET", URL_RELEASE
     WinHttp.Send
     WinHttp.WaitForResponse
     Source = WinHttp.ResponseText
     
-    buf = InStr(InStr(Source, "<entry>"), Source, "<title>") + 7
-    LATEST_VERSION = Mid(Source, buf, InStr(buf, Source, "</title>") - buf)
+    pStart = InStr(InStr(Source, "<entry>"), Source, "<title>") + 7
+    LATEST_VERSION = Mid(Source, pStart, InStr(pStart, Source, "</title>") - pStart)
     
     lblLatVer.Caption = LATEST_VERSION
     btnChkUpd.Visible = False
@@ -47,10 +50,13 @@ Private Sub btnDefault_Click()
     optAcA1.Value = True
     
     'Highlighter
-    chkHlBd.Value = True
-    txtHlBd.Value = "D"
+    chkHlOl.Value = True
+    txtHlOl.Value = "D"
     chkHlCo.Value = True
     txtHlCo.Value = "F"
+    lblHlOlClrValLine.BackColor = 255
+    lblHlCoClrValLine.BackColor = 255
+    lblHlCoClrValFont.BackColor = 255
     
     'SelectObjects
     chkSoSc.Value = True
@@ -63,7 +69,7 @@ Private Sub btnDefault_Click()
 End Sub
 
 Private Sub btnDownload_Click()
-    ThisWorkbook.FollowHyperlink "https://github.com/vaporwavy/xlr8r/archive/" & LATEST_VERSION & ".zip"
+    ThisWorkbook.FollowHyperlink URL_ARCHIVE & LATEST_VERSION & ".zip"
 End Sub
 
 Private Sub btnOK_Click()
@@ -72,7 +78,7 @@ Private Sub btnOK_Click()
     Dim sc(4) As String
     
     sc(0) = txtAcSc.Value
-    sc(1) = txtHlBd.Value
+    sc(1) = txtHlOl.Value
     sc(2) = txtHlCo.Value
     sc(3) = txtSoSc.Value
     sc(4) = txtCbSc.Value
@@ -101,7 +107,7 @@ Private Sub btnOK_Click()
         Set RE = CreateObject("VBScript.RegExp")
         RE.Pattern = "^[A-Z]+[0-9]+$"
         
-        If Not RE.Test(txtAcCstm.Value) Then
+        If Not RE.test(txtAcCstm.Value) Then
             MsgBox msgNeCll
             MultiPage.Value = 1
             txtAcCstm.SetFocus
@@ -156,19 +162,19 @@ Private Sub btnOK_Click()
     Set ClsPS = New ClassPS
     
     Call ClsPS.SetSC(AC_SC, "")
-    Call ClsPS.SetSC(HL_BD, "")
+    Call ClsPS.SetSC(HL_OL, "")
     Call ClsPS.SetSC(HL_CO, "")
     Call ClsPS.SetSC(SO_SC, "")
     Call ClsPS.SetSC(CB_SC, "")
     
     AC_SC = txtAcSc.Value
-    HL_BD = txtHlBd.Value
+    HL_OL = txtHlOl.Value
     HL_CO = txtHlCo.Value
     SO_SC = txtSoSc.Value
     CB_SC = txtCbSc.Value
 
     Call ClsPS.SetSC(AC_SC, "ArrangeCursors")
-    Call ClsPS.SetSC(HL_BD, "Highlighter_Border")
+    Call ClsPS.SetSC(HL_OL, "Highlighter_Border")
     Call ClsPS.SetSC(HL_CO, "Highlighter_Callout")
     Call ClsPS.SetSC(SO_SC, "SelectObjects")
     Call ClsPS.SetSC(CB_SC, "CopyAsBitmap")
@@ -180,6 +186,10 @@ Private Sub btnOK_Click()
     End If
     
     AC_HOME = txtAcCstm.Value
+        
+    HL_OL_CLR_LINE = lblHlOlClrValLine.BackColor
+    HL_CO_CLR_LINE = lblHlCoClrValLine.BackColor
+    HL_CO_CLR_FONT = lblHlCoClrValFont.BackColor
         
     If optSoCd.Value Then
         SO_RNG = "cd"
@@ -201,8 +211,11 @@ Private Sub btnOK_Click()
     Call ClsPS.WriteINI("ArrangeCursors", "AC_SC", AC_SC)
     Call ClsPS.WriteINI("ArrangeCursors", "AC_SHT", AC_SHT)
     Call ClsPS.WriteINI("ArrangeCursors", "AC_HOME", AC_HOME)
-    Call ClsPS.WriteINI("Highlighter", "HL_BD", HL_BD)
+    Call ClsPS.WriteINI("Highlighter", "HL_OL", HL_OL)
     Call ClsPS.WriteINI("Highlighter", "HL_CO", HL_CO)
+    Call ClsPS.WriteINI4Long("Highlighter", "HL_OL_CLR_LINE", HL_OL_CLR_LINE)
+    Call ClsPS.WriteINI4Long("Highlighter", "HL_CO_CLR_LINE", HL_CO_CLR_LINE)
+    Call ClsPS.WriteINI4Long("Highlighter", "HL_CO_CLR_FONT", HL_CO_CLR_FONT)
     Call ClsPS.WriteINI("SelectObjects", "SO_SC", SO_SC)
     Call ClsPS.WriteINI("SelectObjects", "SO_RNG", SO_RNG)
     Call ClsPS.WriteINI("CopyAsBitmap", "CB_SC", CB_SC)
@@ -237,15 +250,15 @@ Private Sub chkCbSc_Change()
     End If
 End Sub
 
-Private Sub chkHlBd_Change()
-    If chkHlBd.Value Then
-        txtHlBd.Enabled = True
+Private Sub chkHlOl_Change()
+    If chkHlOl.Value Then
+        txtHlOl.Enabled = True
         If MultiPage.Value = 2 Then
-            txtHlBd.SetFocus
+            txtHlOl.SetFocus
         End If
     Else
-        txtHlBd.Enabled = False
-        txtHlBd.Value = ""
+        txtHlOl.Enabled = False
+        txtHlOl.Value = ""
     End If
 End Sub
 
@@ -271,6 +284,21 @@ Private Sub chkSoSc_Change()
         txtSoSc.Enabled = False
         txtSoSc.Value = ""
     End If
+End Sub
+
+Private Sub lblHlCoClrValFont_Click()
+    Set objCaller = lblHlCoClrValFont
+    FormCP.Show
+End Sub
+
+Private Sub lblHlCoClrValLine_Click()
+    Set objCaller = lblHlCoClrValLine
+    FormCP.Show
+End Sub
+
+Private Sub lblHlOlClrValLine_Click()
+    Set objCaller = lblHlOlClrValLine
+    FormCP.Show
 End Sub
 
 Private Sub optAcCstm_Change()
@@ -349,13 +377,13 @@ Private Sub UserForm_Initialize()
     '********************************
     'Highligher
     '********************************
-    If HL_BD = "" Then
-        chkHlBd.Value = False
-        txtHlBd.Enabled = False
+    If HL_OL = "" Then
+        chkHlOl.Value = False
+        txtHlOl.Enabled = False
     Else
-        chkHlBd.Value = True
+        chkHlOl.Value = True
     End If
-    txtHlBd.Value = HL_BD
+    txtHlOl.Value = HL_OL
     If HL_CO = "" Then
         chkHlCo.Value = False
         txtHlCo.Enabled = False
@@ -363,6 +391,10 @@ Private Sub UserForm_Initialize()
         chkHlCo.Value = True
     End If
     txtHlCo.Value = HL_CO
+    
+    lblHlOlClrValLine.BackColor = HL_OL_CLR_LINE
+    lblHlCoClrValLine.BackColor = HL_CO_CLR_LINE
+    lblHlCoClrValFont.BackColor = HL_CO_CLR_FONT
     
     '********************************
     'SelectObjects
@@ -409,7 +441,7 @@ Private Sub UserForm_Initialize()
     '********************************
     If LANG = "jp" Then
         FormPS.Caption = "設定"
-        btnDefault.Caption = "デフォルト"
+        btnDefault.Caption = "デフォルト設定"
         btnCancel.Caption = "キャンセル"
         MultiPage.Pages("pgAC").Caption = "カーソル配置"
         frmAcSht.Caption = "シートの位置"
@@ -418,7 +450,7 @@ Private Sub UserForm_Initialize()
         frmAcCl.Caption = "セルの位置"
         optAcCstm.Caption = "指定"
         MultiPage.Pages("pgHL").Caption = "ハイライト"
-        frmHlBd.Caption = "枠"
+        frmHlOl.Caption = "枠"
         frmHlCo.Caption = "吹き出し"
         MultiPage.Pages("pgSO").Caption = "オブジェクト選択"
         frmSoRng.Caption = "範囲"
@@ -441,60 +473,61 @@ Private Sub UserForm_Initialize()
     
 End Sub
 
-Private Function C2N(str As String)
-    If str = "A" Then
+Private Function C2N(col As String)
+    If col = "A" Then
         C2N = 1
-    ElseIf str = "B" Then
+    ElseIf col = "B" Then
         C2N = 2
-    ElseIf str = "C" Then
+    ElseIf col = "C" Then
         C2N = 3
-    ElseIf str = "D" Then
+    ElseIf col = "D" Then
         C2N = 4
-    ElseIf str = "E" Then
+    ElseIf col = "E" Then
         C2N = 5
-    ElseIf str = "F" Then
+    ElseIf col = "F" Then
         C2N = 6
-    ElseIf str = "G" Then
+    ElseIf col = "G" Then
         C2N = 7
-    ElseIf str = "H" Then
+    ElseIf col = "H" Then
         C2N = 8
-    ElseIf str = "I" Then
+    ElseIf col = "I" Then
         C2N = 9
-    ElseIf str = "J" Then
+    ElseIf col = "J" Then
         C2N = 10
-    ElseIf str = "K" Then
+    ElseIf col = "K" Then
         C2N = 11
-    ElseIf str = "L" Then
+    ElseIf col = "L" Then
         C2N = 12
-    ElseIf str = "M" Then
+    ElseIf col = "M" Then
         C2N = 13
-    ElseIf str = "N" Then
+    ElseIf col = "N" Then
         C2N = 14
-    ElseIf str = "O" Then
+    ElseIf col = "O" Then
         C2N = 15
-    ElseIf str = "P" Then
+    ElseIf col = "P" Then
         C2N = 16
-    ElseIf str = "Q" Then
+    ElseIf col = "Q" Then
         C2N = 17
-    ElseIf str = "R" Then
+    ElseIf col = "R" Then
         C2N = 18
-    ElseIf str = "S" Then
+    ElseIf col = "S" Then
         C2N = 19
-    ElseIf str = "T" Then
+    ElseIf col = "T" Then
         C2N = 20
-    ElseIf str = "U" Then
+    ElseIf col = "U" Then
         C2N = 21
-    ElseIf str = "V" Then
+    ElseIf col = "V" Then
         C2N = 22
-    ElseIf str = "W" Then
+    ElseIf col = "W" Then
         C2N = 23
-    ElseIf str = "X" Then
+    ElseIf col = "X" Then
         C2N = 24
-    ElseIf str = "Y" Then
+    ElseIf col = "Y" Then
         C2N = 25
-    ElseIf str = "Z" Then
+    ElseIf col = "Z" Then
         C2N = 26
     Else
         C2N = 0
     End If
 End Function
+

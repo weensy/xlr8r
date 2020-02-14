@@ -22,6 +22,18 @@ Public Function ReadINI(iSt As String, iK As String) As String
     If sSize Then ReadINI = Left$(sBuf, sSize)
 End Function
 
+Public Sub WriteINI4Long(iSt As String, iK As String, iVal As Long)
+    Call WriteString(iSt, iK, iVal, INIPATH)
+End Sub
+
+Public Function ReadINI4Long(iSt As String, iK As String) As String
+    Dim sBuf As String
+    Dim sSize As Long
+    sBuf = Space$(255)
+    sSize = GetString(iSt, iK, "0", sBuf, 255, INIPATH)
+    If sSize Then ReadINI4Long = Left$(sBuf, sSize)
+End Function
+
 Public Sub SetSC(sKey As String, sProc As String)
     If sKey = "" Then
         Exit Sub

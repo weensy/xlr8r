@@ -10,8 +10,8 @@ Attribute VB_Exposed = False
 Private Declare PtrSafe Function GetCursorPos Lib "USER32" (lpPoint As POINTAPI) As Long
 
 Private Type POINTAPI
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 End Type
 
 Private Const DPI As Long = 96
@@ -59,8 +59,8 @@ Public Sub pHL(HL_SHP As String)
     R1C1Left = ActiveWindow.ActivePane.PointsToScreenPixelsX(0) '(Cells(scrolledRow, scrolledCol).Left)
     R1C1Top = ActiveWindow.ActivePane.PointsToScreenPixelsY(0) '(Cells(scrolledRow, scrolledCol).Top)
     GetCursorPos Pos
-    MouseL1 = (Pos.x - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
-    MouseT1 = (Pos.y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseL1 = (Pos.X - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseT1 = (Pos.Y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
     
     'Messagebox
     If MsgBox(msgCdEnd, vbOKCancel, ttlCdEnd) <> vbOK Then
@@ -71,8 +71,8 @@ Public Sub pHL(HL_SHP As String)
     R1C1Left = ActiveWindow.ActivePane.PointsToScreenPixelsX(0) '(Cells(scrolledRow, scrolledCol).Left)
     R1C1Top = ActiveWindow.ActivePane.PointsToScreenPixelsY(0) '(Cells(scrolledRow, scrolledCol).Top)
     GetCursorPos Pos
-    MouseL2 = (Pos.x - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
-    MouseT2 = (Pos.y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseL2 = (Pos.X - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseT2 = (Pos.Y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
     
     'Analysis
     If MouseL1 < MouseL2 Then
@@ -102,11 +102,11 @@ Public Sub pHL(HL_SHP As String)
             .Fill.Transparency = 0
             .Fill.Solid
             .Line.Visible = msoTrue
-            .Line.ForeColor.RGB = RGB(255, 0, 0)
+            .Line.ForeColor.RGB = HL_CO_CLR_LINE
             .Line.Transparency = 0
             .Line.Weight = 3
             .TextFrame2.VerticalAnchor = msoAnchorMiddle
-            .TextFrame2.TextRange.Font.Fill.ForeColor.RGB = RGB(255, 0, 0)
+            .TextFrame2.TextRange.Font.Fill.ForeColor.RGB = HL_CO_CLR_FONT
             .TextFrame2.TextRange.Font.Fill.Visible = msoTrue
             .TextFrame2.TextRange.Font.Fill.Transparency = 0
             .TextFrame2.TextRange.Font.Fill.Solid
@@ -121,7 +121,7 @@ Public Sub pHL(HL_SHP As String)
         With shp
             .Fill.Visible = msoFalse
             .Line.Visible = msoTrue
-            .Line.ForeColor.RGB = RGB(255, 0, 0)
+            .Line.ForeColor.RGB = HL_OL_CLR_LINE
             .Line.Transparency = 0
             .Line.Weight = 3
         End With

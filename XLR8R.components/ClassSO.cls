@@ -10,8 +10,8 @@ Attribute VB_Exposed = False
 Private Declare PtrSafe Function GetCursorPos Lib "USER32" (lpPoint As POINTAPI) As Long
 
 Private Type POINTAPI
-    x As Long
-    y As Long
+    X As Long
+    Y As Long
 End Type
 
 Private Const DPI As Long = 96
@@ -66,8 +66,8 @@ Private Sub SoCd()
     R1C1Left = ActiveWindow.ActivePane.PointsToScreenPixelsX(0) '(Cells(scrolledRow, scrolledCol).Left)
     R1C1Top = ActiveWindow.ActivePane.PointsToScreenPixelsY(0) '(Cells(scrolledRow, scrolledCol).Top)
     GetCursorPos Pos
-    MouseL1 = (Pos.x - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
-    MouseT1 = (Pos.y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseL1 = (Pos.X - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseT1 = (Pos.Y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
     
     'Messagebox
     If MsgBox(msgCdEnd, vbOKCancel, ttlCdEnd) <> vbOK Then
@@ -78,8 +78,8 @@ Private Sub SoCd()
     R1C1Left = ActiveWindow.ActivePane.PointsToScreenPixelsX(0) '(Cells(scrolledRow, scrolledCol).Left)
     R1C1Top = ActiveWindow.ActivePane.PointsToScreenPixelsY(0) '(Cells(scrolledRow, scrolledCol).Top)
     GetCursorPos Pos
-    MouseL2 = (Pos.x - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
-    MouseT2 = (Pos.y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseL2 = (Pos.X - R1C1Left) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
+    MouseT2 = (Pos.Y - R1C1Top) / (DPI / PPI) '/ (ActiveWindow.Zoom / 100)
     
     'Analysis
     If MouseL1 < MouseL2 Then

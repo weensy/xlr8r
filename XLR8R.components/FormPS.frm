@@ -313,6 +313,14 @@ Private Sub optAcCstm_Change()
     End If
 End Sub
 
+Private Sub optEnglish_Change()
+    Call SetCaptions("en")
+End Sub
+
+Private Sub optJapanese_Change()
+    Call SetCaptions("jp")
+End Sub
+
 Private Sub txtAcCstm_Change()
     txtAcCstm.Value = UCase(txtAcCstm.Value)
 End Sub
@@ -439,7 +447,12 @@ Private Sub UserForm_Initialize()
     '********************************
     'Set caption
     '********************************
-    If LANG = "jp" Then
+    Call SetCaptions(LANG)
+    
+End Sub
+
+Private Sub SetCaptions(setLang As String)
+    If setLang = "jp" Then
         FormPS.Caption = "設定"
         btnDefault.Caption = "デフォルト設定"
         btnCancel.Caption = "キャンセル"
@@ -449,7 +462,7 @@ Private Sub UserForm_Initialize()
         optAcCs.Caption = "現在シート"
         frmAcCl.Caption = "セルの位置"
         optAcCstm.Caption = "指定"
-        MultiPage.Pages("pgHL").Caption = "ハイライト"
+        MultiPage.Pages("pgHL").Caption = "ハイライター"
         frmHlOl.Caption = "枠"
         frmHlCo.Caption = "吹き出し"
         lblHlOlClrLine.Caption = "ライン"
@@ -472,8 +485,40 @@ Private Sub UserForm_Initialize()
         lblLatest.Caption = "最新"
         btnChkUpd.Caption = "チェック"
         btnDownload.Caption = "ダウンロード"
+    Else
+        FormPS.Caption = "Preference Settings"
+        btnDefault.Caption = "Set default"
+        btnCancel.Caption = "Cancel"
+        MultiPage.Pages("pgAC").Caption = "ArrangeCursors"
+        frmAcSht.Caption = "Destination sheet"
+        optAcFs.Caption = "First sheet"
+        optAcCs.Caption = "Current sheet"
+        frmAcCl.Caption = "Home cell"
+        optAcCstm.Caption = "Custom"
+        MultiPage.Pages("pgHL").Caption = "Highlighter"
+        frmHlOl.Caption = "Outline"
+        frmHlCo.Caption = "Callout"
+        lblHlOlClrLine.Caption = "Line"
+        lblHlCoClrLine.Caption = "Line"
+        lblHlCoClrFont.Caption = "Font"
+        MultiPage.Pages("pgSO").Caption = "SelectObjs"
+        frmSoRng.Caption = "Range"
+        optSoSl.Caption = "Selection"
+        optSoCd.Caption = "Coordinate"
+        MultiPage.Pages("pgCB").Caption = "CopyAsBmp"
+        MultiPage.Pages("pgSS").Caption = "SwitchSheet"
+        frmSF.Caption = "Switch to first sheet"
+        frmSL.Caption = "Switch to last sheet"
+        MultiPage.Pages("pgGS").Caption = "General"
+        frmLng.Caption = "Language"
+        optEnglish.Caption = "English"
+        optJapanese.Caption = "Japanese"
+        frmVer.Caption = "Version"
+        lblCurrent.Caption = "Current"
+        lblLatest.Caption = "Latest"
+        btnChkUpd.Caption = "Check update"
+        btnDownload.Caption = "Download"
     End If
-    
 End Sub
 
 Private Function C2N(col As String)

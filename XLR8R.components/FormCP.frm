@@ -17,7 +17,7 @@ Private turnedOn    As Object
 
 Private Sub TurnOff(lblOff As Object)
     If Not turnedOn Is Nothing Then
-        lblOff.BorderColor = RGB(128, 128, 128)
+        lblOff.BorderColor = RGB(100, 100, 100)
         
         'To avoid bug of excel
         lblOff.BorderStyle = fmBorderStyleNone

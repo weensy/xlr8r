@@ -33,12 +33,17 @@ Private Sub btnChkUpd_Click()
     WinHttp.WaitForResponse
     Source = WinHttp.ResponseText
     
+    On Error Resume Next
     pStart = InStr(InStr(Source, "<entry>"), Source, "<title>") + 7
     LATEST_VERSION = Mid(Source, pStart, InStr(pStart, Source, "</title>") - pStart)
     
-    lblLatVer.Caption = LATEST_VERSION
-    btnChkUpd.Visible = False
-    btnDownload.Visible = True
+    If Err = 0 Then
+        lblLatVer.Caption = LATEST_VERSION
+        btnChkUpd.Visible = False
+        btnDownload.Visible = True
+    Else
+        lblLatVer.Caption = "failed"
+    End If
     
 End Sub
 

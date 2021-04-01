@@ -22,16 +22,15 @@ End Sub
 
 Private Sub btnChkUpd_Click()
 
-    Dim WinHttp   As Object
+    Dim XmlHttp   As Object
     Dim Source    As String
     Dim pStart    As Long
     
-    Set WinHttp = CreateObject("WinHttp.WinHttpRequest.5.1")
+    Set XmlHttp = CreateObject("MSXML2.XMLHTTP.6.0")
     
-    WinHttp.Open "GET", URL_RELEASE
-    WinHttp.Send
-    WinHttp.WaitForResponse
-    Source = WinHttp.ResponseText
+    XmlHttp.Open "GET", URL_RELEASE
+    XmlHttp.Send
+    Source = XmlHttp.ResponseText
     
     On Error Resume Next
     pStart = InStr(InStr(Source, "<entry>"), Source, "<title>") + 7

@@ -1,5 +1,5 @@
 Attribute VB_Name = "Module"
-Public Const CURRENT_VERSION As String = "v1.2.6"
+Public Const CURRENT_VERSION As String = "v1.2.7"
 Public LATEST_VERSION As String
 
 'Ini file path
